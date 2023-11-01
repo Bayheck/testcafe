@@ -984,6 +984,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private _adjustConfigurationWithCommand (command: CommandBase): void {
+        debugger;
         if (command.type === COMMAND_TYPE.testDone) {
             this.testDoneCommandQueued = true;
             if (this.debugLogger)
@@ -1007,6 +1008,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         else if (command.type === COMMAND_TYPE.debug)
             this.debugging = true;
+        debugger;
     }
 
     private async _adjustScreenshotCommand (command: TakeScreenshotBaseCommand): Promise<void> {

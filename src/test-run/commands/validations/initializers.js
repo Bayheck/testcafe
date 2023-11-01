@@ -19,6 +19,7 @@ export function initTypeSelector (name, val, initOptions) {
 }
 
 export function initSelector (name, val, { testRun, ...options }) {
+    debugger;
     if (val instanceof ExecuteSelectorCommand)
         return val;
 

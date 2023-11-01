@@ -1482,10 +1482,11 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _onSetBreakpointCommand ({ isTestError }) {
+        debugger;
         const showDebuggingStatusPromise = this.statusBar.showDebuggingStatus(isTestError);
 
         this.selectorInspectorPanel.show();
-
+        debugger;
         showDebuggingStatusPromise.then(debug => {
             const stopAfterNextAction = debug === STATUS_BAR_DEBUG_ACTION.step;
 
@@ -1651,6 +1652,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _executeCommand (command) {
+        debugger;
         this.contextStorage.setItem(this.WINDOW_COMMAND_API_CALL_FLAG, false);
 
         if (this.selectorInspectorPanel)

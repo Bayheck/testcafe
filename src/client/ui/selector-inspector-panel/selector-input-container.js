@@ -141,7 +141,7 @@ export class SelectorInputContainer {
 
     _onSelectorTyped () {
         selectorsList.clear();
-
+        debugger;
         this._onFocusInput();
     }
 

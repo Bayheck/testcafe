@@ -163,14 +163,17 @@ export default class TestController {
     }
 
     enqueueCommand (CmdCtor, cmdArgs, validateCommandFn, callsite) {
+        debugger;
         callsite = callsite || getCallsiteForMethod(CmdCtor.methodName);
 
         const command = this._createCommand(CmdCtor, cmdArgs, callsite);
 
+        debugger;
         if (typeof validateCommandFn === 'function')
             validateCommandFn(this, command, callsite);
 
         return this._enqueueTask(command.methodName, () => {
+            debugger;
             return () => {
                 return this.testRun.executeCommand(command, callsite)
                     .catch(err => {
@@ -333,6 +336,7 @@ export default class TestController {
     }
 
     [delegatedAPI(ClickCommand.methodName)] (selector, options) {
+        debugger;
         return this.enqueueCommand(ClickCommand, { selector, options });
     }
 
@@ -602,8 +606,9 @@ export default class TestController {
         return new Assertion(actual, this, callsite);
     }
 
-    [delegatedAPI(DebugCommand.methodName)] () {
-        return this.enqueueCommand(DebugCommand);
+    [delegatedAPI(DebugCommand.methodName)] (selector) {
+        debugger;
+        return this.enqueueCommand(DebugCommand, selector);
     }
 
     [delegatedAPI(SetTestSpeedCommand.methodName)] (speed) {
@@ -639,12 +644,14 @@ export default class TestController {
     [delegatedAPI(ReportCommand.methodName)] (...args) {
         return this.enqueueCommand(ReportCommand, { args });
     }
+
     shouldStop (command) {
+        debugger;
         // NOTE: should always stop on Debug command
         return command === 'debug';
     }
 }
-
+debugger;
 TestController.API_LIST = getDelegatedAPIList(TestController.prototype);
 
 delegateAPI(TestController.prototype, TestController.API_LIST, { useCurrentCtxAsHandler: true });

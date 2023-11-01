@@ -15,6 +15,7 @@ function createIsInvisibleError () {
 }
 
 async function parseSelector (selector) {
+    debugger;
     const { communicationUrls } = window[INTERNAL_PROPERTIES.testCafeDriverInstance];
 
     return browser.parseSelector(communicationUrls.parseSelector, createNativeXHR, selector);
@@ -29,6 +30,7 @@ async function executeSelector (parsedSelector) {
 }
 
 export async function getElementsBySelector (selector) {
+    debugger;
     const parsedSelector = await parseSelector(selector);
 
     return executeSelector(parsedSelector).catch(() => null);
