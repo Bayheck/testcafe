@@ -15,13 +15,12 @@ function createIsInvisibleError () {
 }
 
 async function parseSelector (selector) {
-    debugger;
     const { communicationUrls } = window[INTERNAL_PROPERTIES.testCafeDriverInstance];
 
     return browser.parseSelector(communicationUrls.parseSelector, createNativeXHR, selector);
 }
 
-async function executeSelector (parsedSelector) {
+export async function executeSelector (parsedSelector) {
     const startTime        = nativeMethods.date();
     const selectorExecutor = new SelectorExecutor(parsedSelector, GLOBAL_TIMEOUT, startTime, createNotFoundError, createIsInvisibleError);
     const elements         = await selectorExecutor.getResult();
@@ -30,7 +29,6 @@ async function executeSelector (parsedSelector) {
 }
 
 export async function getElementsBySelector (selector) {
-    debugger;
     const parsedSelector = await parseSelector(selector);
 
     return executeSelector(parsedSelector).catch(() => null);

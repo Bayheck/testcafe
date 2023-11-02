@@ -698,7 +698,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.errs.length && this.debugOnFail) {
             const errStr = this.debugReporterPluginHost.formatError(this.errs[0]);
 
-            await this._enqueueSetBreakpointCommand(void 0, errStr);
+            await this._enqueueSetBreakpointCommand(void 0, null, errStr);
         }
 
         await this.emit('before-done');
@@ -783,7 +783,6 @@ export default class TestRun extends AsyncEventEmitter {
         return new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
             this.addingDriverTasksCount--;
             this.driverTaskQueue.push({ command, resolve, reject, callsite });
-
             if (!this.addingDriverTasksCount)
                 await this.emit(ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT, this.driverTaskQueue.length);
         });
@@ -821,11 +820,10 @@ export default class TestRun extends AsyncEventEmitter {
         return this.cookieProvider.deleteCookies(cookies, urls);
     }
 
-    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
+    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, selector?: object | null, error?: string): Promise<void> {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
-
-        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite) as boolean;
+        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error, selector), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
@@ -984,7 +982,6 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private _adjustConfigurationWithCommand (command: CommandBase): void {
-        debugger;
         if (command.type === COMMAND_TYPE.testDone) {
             this.testDoneCommandQueued = true;
             if (this.debugLogger)
@@ -1008,7 +1005,6 @@ export default class TestRun extends AsyncEventEmitter {
 
         else if (command.type === COMMAND_TYPE.debug)
             this.debugging = true;
-        debugger;
     }
 
     private async _adjustScreenshotCommand (command: TakeScreenshotBaseCommand): Promise<void> {
@@ -1156,12 +1152,11 @@ export default class TestRun extends AsyncEventEmitter {
             const canDebug = !this.browserConnection.isHeadlessBrowser();
 
             if (canDebug)
-                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, void 0);
+                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, command?.selector, void 0);
 
             this.debugging = false;
 
             this.warningLog.addWarning({ message: WARNING_MESSAGE.debugInHeadlessError, actionId: command.actionId });
-
             return null;
         }
 

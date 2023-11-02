@@ -15,7 +15,6 @@ import { getCallsiteId } from '../../utils/callsite';
 const VISIBLE_PROP_NAME       = 'visible';
 const SNAPSHOT_PROP_PRIMITIVE = `[object ${ReExecutablePromise.name}]`;
 
-debugger;
 const filterNodes = new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
     if (typeof filter === 'number') {
         const matchingNode = filter < 0 ? nodes[nodes.length + filter] : nodes[filter];
