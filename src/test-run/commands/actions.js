@@ -184,7 +184,11 @@ export class DebugCommand extends ActionCommandBase {
 
     getAssignableProperties () {
         return [
-            { name: 'selector', init: initSelector, required: false },
+            { name: 'selector', init: (name, val, options) => {
+                return initSelector(name, val, Object.assign({}, options,
+                    { skipVisibilityCheck: true, collectionMode: true }
+                ));
+            }, required: false },
         ];
     }
 }

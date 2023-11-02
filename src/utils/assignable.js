@@ -39,18 +39,13 @@ export default class Assignable {
     }
 
     getAllAssignableProperties () {
-        debugger;
         let parent = Object.getPrototypeOf(this);
         let result = [];
 
-        debugger;
         while (parent && parent.getAssignableProperties) {
-            debugger;
             result = arrayConcat.call(result, parent.getAssignableProperties());
             parent = Object.getPrototypeOf(parent);
-            debugger;
         }
-        debugger;
         return result;
     }
 
@@ -74,11 +69,9 @@ export default class Assignable {
 
         const props = this.getAllAssignableProperties();
 
-        debugger;
         for (let i = 0; i < props.length; i++) {
             const { name, type, required, init, defaultValue } = props[i];
 
-            debugger;
             if (defaultValue !== void 0)
                 this[name] = defaultValue;
 
@@ -92,9 +85,7 @@ export default class Assignable {
 
                 type(typeName, srcVal);
             }
-            debugger;
             this[name] = init ? init(name, srcVal, initOptions, validate) : srcVal;
-            debugger;
         }
     }
 }

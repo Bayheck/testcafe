@@ -163,9 +163,10 @@ export class SelectorInputContainer {
         const selectorValue = selector.apiFnChain.join('');
 
         this.value = selectorValue;
-        const elements = await executeSelector(selector).catch(() => null);
+        let elements = await executeSelector(selector).catch(() => null);
 
-        this._indicateMatches([elements]);
-        this._highlightElements([elements]);
+        elements = nativeMethods.isArray(elements) ? elements : [elements];
+        this._indicateMatches(elements);
+        this._highlightElements(elements);
     }
 }
